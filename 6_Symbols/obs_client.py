@@ -1,3 +1,10 @@
+import websocket
+import json
+import logging
+import base64
+import hashlib
+from obs_websocket import OBSWebSocket  # Import the OBSWebSocket class
+
 # [Previous OBSWebSocket class code remains the same...]
 
 if __name__ == "__main__":
