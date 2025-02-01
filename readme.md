@@ -1,6 +1,6 @@
 # WebSockets
 - Use it to update an image and get the skills and library 
-<video controls src="readme_watch_1.mp4" title="Watch 1"></video>
+![Watch 1](readme_watch_1.mp4)
 
 ## AI First Approach
 - Document the prompts and commit the updates while progressing handson
