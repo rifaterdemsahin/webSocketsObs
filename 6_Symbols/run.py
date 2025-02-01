@@ -134,7 +134,7 @@ class OBSWebSocket:
 
 if __name__ == "__main__":
     # Replace with your OBS WebSocket server details
-    obs_ws = OBSWebSocket("ws://localhost:4444", "XXX")
+    obs_ws = OBSWebSocket("ws://localhost:4444", "#e3EB50")
     
     try:
         logging.info("Connecting to OBS WebSocket...")
