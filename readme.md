@@ -1,15 +1,15 @@
 # WebSockets
 - Use it to update an image using websockets in OBS and get the skills and library 
-- ![Watch 1](watchme_1.mp4)
-- ![Watch 2](watchme_2.mp4)
-- ![Watch 3](watchme_3.mp4)
-- ![Watch 4](watchme_4.mp4)
-- ![Watch 5](watchme_5.mp4)
-- ![Watch 6](watchme_6.mp4)
-- ![Watch 7](watchme_7.mp4)
-- ![Watch 8](watchme_8.mp4)
-- ![Watch 9](watchme_9.mp4)
-- ![Watch 10](watchme_10.mp4)
+- ![WatchMe 1](watchme_1.mp4)
+- ![WatchMe 2](watchme_2.mp4)
+- ![WatchMe 3](watchme_3.mp4)
+- ![WatchMe 4](watchme_4.mp4)
+- ![WatchMe 5](watchme_5.mp4)
+- ![WatchMe 6](watchme_6.mp4)
+- ![WatchMe 7](watchme_7.mp4)
+- ![WatchMe 8](watchme_8.mp4)
+- ![WatchMe 9](watchme_9.mp4)
+- ![WatchMe 10](watchme_10.mp4)
 
 ## AI First Approach
 - Document the prompts and commit the updates while progressing handson
