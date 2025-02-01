@@ -22,8 +22,8 @@ def on_open(ws):
         send_request(ws, auth_payload)
 
     # Change image source (you must know the source name in OBS)
-    source_name = "YourImageSource"  # The name of the image source in OBS
-    image_file_path = "path_to_new_image.png"  # Path to your new image file
+    source_name = "Image"  # The name of the image source in OBS
+    image_file_path = "/Users/rifaterdemsahin/Downloads/expense16_taxi.jpeg"  # Path to your new image file
 
     # Set the new image for the source
     change_image_payload = {
