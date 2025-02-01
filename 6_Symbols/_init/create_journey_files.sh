@@ -28,6 +28,3 @@ touch 1.7.1_files.md
 
 # 🦆 Rubber duck debugging
 touch 1.8.1_rubberduck.md
-
-# 🔧 Debugging tools
-touch 1.9.1_debugging_tools.md
