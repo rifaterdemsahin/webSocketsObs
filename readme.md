@@ -34,6 +34,9 @@ Symbols/git_push.sh "living the dream"
 Symbols/git_push.sh "nginx push"
 
 
+### Contributor
+- https://www.linkedin.com/in/rifaterdemsahin/
+
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
