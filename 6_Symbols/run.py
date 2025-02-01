@@ -4,7 +4,7 @@ import logging
 import base64
 import hashlib
 
-inputUuid = "0d69aa29-5eba-486f-9f44-d674a74ce565"
+inputUuid = "15a7669f-68e8-4839-84f8-c1333c8fd54b"
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -27,10 +27,10 @@ class OBSWebSocket:
         )
         self.ws.run_forever()
 
-    def on_open(self):
+    def on_open(self, ws):
         logging.info("WebSocket connection opened")
 
-    def on_message(self, message):
+    def on_message(self, ws, message):
         logging.info(f"Received message: {message}")
         try:
             data = json.loads(message)
@@ -96,24 +96,25 @@ class OBSWebSocket:
         except Exception as e:
             logging.error(f"Authentication error: {str(e)}")
 
-def change_image(self, input_uuid, image_path):
-    if not self.authenticated:
-        logging.error("Not authenticated yet")
-        return
+    def change_image(self, input_uuid, image_path):
+        if not self.authenticated:
+            logging.error("Not authenticated yet")
+            return
 
-    payload = {
-        "op": 6,
-        "d": {
-            "requestType": "SetInputSettings",
-            "requestId": "change_image",
-            "inputUuid": input_uuid,
-            "inputSettings": {
-                "file": image_path
+        payload = {
+            "op": 6,
+            "d": {
+                "requestType": "SetInputSettings",
+                "requestId": "change_image",
+                "inputName": "XIMAGEX",  # Try using inputName
+                "inputUuid": inputUuid,  # Also include inputUuid
+                "inputSettings": {
+                    "file": image_path
+                }
             }
         }
-    }
-    self.send_request(payload)
-    logging.info(f"Image change request sent for {image_path}")
+        self.send_request(payload)
+        logging.info(f"Image change request sent for {image_path}")
 
     def send_request(self, payload):
         if self.ws and self.ws.sock and self.ws.sock.connected:
@@ -123,10 +124,10 @@ def change_image(self, input_uuid, image_path):
         else:
             logging.error("WebSocket is not connected")
 
-    def on_error(self, error):
+    def on_error(self, ws, error):
         logging.error(f"Error: {error}")
 
-    def on_close(self, close_status_code, close_msg):
+    def on_close(self, ws, close_status_code, close_msg):
         logging.info(f"Closed connection with status code {close_status_code}: {close_msg}")
 
 if __name__ == "__main__":
