@@ -4,12 +4,10 @@ import logging
 import base64
 import hashlib
 
+inputUuid = "0d69aa29-5eba-486f-9f44-d674a74ce565"
+
 # Set up logging
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-
-# Replace with your OBS WebSocket server details
-OBS_WEBSOCKET_URL = "ws://localhost:4444"
-OBS_PASSWORD = "YYmm123!"
 
 class OBSWebSocket:
     def __init__(self, url, password):
@@ -29,35 +27,45 @@ class OBSWebSocket:
         )
         self.ws.run_forever()
 
-    def on_open(self, ws):
+    def on_open(self):
         logging.info("WebSocket connection opened")
-        # Wait for the initial identification message from OBS
 
-    def on_message(self, ws, message):
+    def on_message(self, message):
         logging.info(f"Received message: {message}")
         try:
             data = json.loads(message)
             
-            # Handle authentication
-            if not self.authenticated and "op" in data and data["op"] == 0:
-                self.handle_authentication(data)
+            # Handle initial connection message
+            if "op" in data and data["op"] == 0 and "d" in data:
+                if "authentication" in data["d"]:
+                    self.handle_authentication(data["d"]["authentication"])
             
-            # Handle other responses
-            elif "status" in data:
-                if data["status"] == "error":
-                    logging.error(f"Error from OBS: {data['error']}")
-                else:
-                    logging.info(f"Success response: {data}")
+            # Handle response messages
+            elif "op" in data and data["op"] == 7:
+                self.handle_response(data["d"])
 
         except json.JSONDecodeError:
             logging.error(f"Failed to parse message: {message}")
+        except Exception as e:
+            logging.error(f"Error processing message: {str(e)}")
 
-    def handle_authentication(self, data):
-        if "d" in data and "authentication" in data["d"]:
-            auth_required = data["d"]["authentication"]
-            if auth_required:
-                challenge = data["d"].get("challenge")
-                salt = data["d"].get("salt")
+    def handle_response(self, response_data):
+        if "requestStatus" in response_data:
+            status = response_data["requestStatus"]
+            if not status.get("result", False):
+                logging.error(f"Request failed: {status.get('comment', 'Unknown error')}")
+            else:
+                logging.info("Request successful")
+
+    def handle_authentication(self, auth_data):
+        try:
+            if auth_data:
+                challenge = auth_data.get("challenge", "")
+                salt = auth_data.get("salt", "")
+
+                if not challenge or not salt:
+                    logging.error("Missing authentication challenge or salt")
+                    return
 
                 secret = base64.b64encode(
                     hashlib.sha256(
@@ -81,24 +89,31 @@ class OBSWebSocket:
                 self.send_request(auth_payload)
                 self.authenticated = True
                 logging.info("Authentication completed")
+                
+                # Change image after successful authentication
+                self.change_image(inputUuid, "/Users/rifaterdemsahin/Downloads/expense16_taxi.jpeg")
 
-    def change_image(self, source_name, image_path):
-        if not self.authenticated:
-            logging.error("Not authenticated yet")
-            return
+        except Exception as e:
+            logging.error(f"Authentication error: {str(e)}")
 
-        payload = {
-            "op": 6,
-            "d": {
-                "requestType": "SetInputSettings",
-                "requestId": "change_image",
-                "inputName": source_name,
-                "inputSettings": {
-                    "file": image_path
-                }
+def change_image(self, input_uuid, image_path):
+    if not self.authenticated:
+        logging.error("Not authenticated yet")
+        return
+
+    payload = {
+        "op": 6,
+        "d": {
+            "requestType": "SetInputSettings",
+            "requestId": "change_image",
+            "inputUuid": input_uuid,
+            "inputSettings": {
+                "file": image_path
             }
         }
-        self.send_request(payload)
+    }
+    self.send_request(payload)
+    logging.info(f"Image change request sent for {image_path}")
 
     def send_request(self, payload):
         if self.ws and self.ws.sock and self.ws.sock.connected:
@@ -108,16 +123,18 @@ class OBSWebSocket:
         else:
             logging.error("WebSocket is not connected")
 
-    def on_error(self, ws, error):
+    def on_error(self, error):
         logging.error(f"Error: {error}")
 
-    def on_close(self, ws, close_status_code, close_msg):
+    def on_close(self, close_status_code, close_msg):
         logging.info(f"Closed connection with status code {close_status_code}: {close_msg}")
 
 if __name__ == "__main__":
-    obs_ws = OBSWebSocket(OBS_WEBSOCKET_URL, OBS_PASSWORD)
+    # Replace with your OBS WebSocket server details
+    obs_ws = OBSWebSocket("ws://localhost:4444", "XXX")
     
     try:
+        logging.info("Connecting to OBS WebSocket...")
         obs_ws.connect()
     except KeyboardInterrupt:
         logging.info("Shutting down...")
