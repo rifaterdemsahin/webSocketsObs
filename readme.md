@@ -1,5 +1,5 @@
 # WebSockets
-- Use it to update an image and get the skills and library 
+- Use it to update an image using websockets in OBS and get the skills and library 
 - ![Watch 1](readme_watch_1.mp4)
 - ![Watch 2](readme_watch_2.mp4)
 - ![Watch 3](readme_watch_3.mp4)
