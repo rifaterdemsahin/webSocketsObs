@@ -106,10 +106,12 @@ class OBSWebSocket:
             "d": {
                 "requestType": "SetInputSettings",
                 "requestId": "change_image",
-                "inputName": "XIMAGEX",  # Try using inputName
-                "inputUuid": inputUuid,  # Also include inputUuid
-                "inputSettings": {
-                    "file": image_path
+                "requestData": {  # Add this nested level
+                    "inputName": "XIMAGEX",
+                    "inputUuid": input_uuid,
+                    "inputSettings": {
+                        "file": image_path
+                    }
                 }
             }
         }
