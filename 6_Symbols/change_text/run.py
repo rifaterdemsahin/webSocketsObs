@@ -91,12 +91,12 @@ class OBSWebSocket:
                 logging.info("Authentication completed")
                 
                 # Change image after successful authentication
-                self.change_image(inputUuid, "/Users/rifaterdemsahin/Downloads/expense16_taxi.jpeg")
+                self.change_text(inputUuid, "Spread the love")
 
         except Exception as e:
             logging.error(f"Authentication error: {str(e)}")
 
-    def change_image(self, input_uuid, image_path):
+    def change_text(self, input_uuid, mytext):
         if not self.authenticated:
             logging.error("Not authenticated yet")
             return
@@ -110,13 +110,13 @@ class OBSWebSocket:
                     "inputName": "XTEXTX",
                     "inputUuid": input_uuid,
                     "settings": {
-                        "text": "Spread the love"
+                        "text": mytext
                     }
                 }
             }
         }
         self.send_request(payload)
-        logging.info(f"Image change request sent for {image_path}")
+        logging.info(f"text change request sent for {mytext}")
 
     def send_request(self, payload):
         if self.ws and self.ws.sock and self.ws.sock.connected:
